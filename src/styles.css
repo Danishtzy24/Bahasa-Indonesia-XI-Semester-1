@@ -529,3 +529,26 @@ fieldset:has(input[value$="-S"]) .option:nth-of-type(2) .option-letter{color:#9d
 .chapter-mixed.active .chapter-card-meta>i{background:#cfdde9}
 .chapter-mixed.active .chapter-mini{background:#ffffff2b;border-color:#ffffff45}
 .chapter-mixed.active .chapter-score{background:#fff;color:#3e586e}
+
+/* =========================================================
+   LAPISAN LAB PILL — desain ulang tombol contoh lab (senada PKN, biru)
+   ========================================================= */
+.lab-controls{gap:8px;flex-wrap:wrap}
+.lab-controls button{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1.5px solid #cdd9e5;color:#5d7285;font:600 11.5px/1 var(--body);letter-spacing:.2px;padding:8px 15px 8px 9px;border-radius:999px;box-shadow:0 2px 0 #3e586e0a;transition:transform .3s var(--ease),border-color .22s,background .22s,color .22s,box-shadow .3s var(--ease)}
+.lab-controls button .lab-num{display:grid;place-items:center;min-width:25px;height:25px;border-radius:9px;background:#e9f1f7;color:#3e586e;font:700 10px/1 var(--heading);letter-spacing:.5px;transition:background .22s,color .22s,transform .3s var(--ease)}
+.lab-controls button:hover{border-color:#9dbdd4;transform:translateY(-2px);box-shadow:0 7px 14px #3e586e14}
+.lab-controls button:hover .lab-num{transform:rotate(-6deg) scale(1.05)}
+.lab-controls button.selected{background:#3e586e;border-color:#3e586e;color:#eef4fa;box-shadow:0 8px 18px #3e586e2b,0 2px 0 #3e586e14}
+.lab-controls button.selected .lab-num{background:#eef4fa;color:#3e586e;transform:none}
+.lab-controls button:active{transform:translateY(0) scale(.98)}
+.lab-pagination{gap:12px}
+.lab-pagination>button{display:inline-flex;align-items:center;gap:9px;background:#eef4fa;border:1.5px solid #cdd9e5;color:#3e586e;font:600 11px/1 var(--body);padding:10px 15px;border-radius:999px;transition:transform .3s var(--ease),background .22s,border-color .22s,box-shadow .3s var(--ease)}
+.lab-pagination>button:hover{background:#e2edf6;border-color:#9dbdd4;transform:translateY(-2px);box-shadow:0 7px 14px #3e586e14}
+.lab-pagination>button .icon{transition:transform .3s var(--ease)}
+.lab-pagination>button:hover .icon{transform:translateX(3px)}
+.lab-caption>b{background:#3e586e;border-color:#3e586e;color:#eef4fa;letter-spacing:1.2px;padding:5px 9px;border-radius:999px}
+@media(max-width:640px){
+ .lab-controls button{font-size:10.5px;padding:7px 12px 7px 8px;gap:7px}
+ .lab-controls button .lab-num{min-width:22px;height:22px;font-size:9px;border-radius:7px}
+ .lab-pagination>button{font-size:10px;padding:9px 13px}
+}
