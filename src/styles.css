@@ -509,3 +509,23 @@ fieldset:has(input[value$="-S"]) .option:nth-of-type(2) .option-letter{color:#9d
  .word-two{right:8px;top:8px}
  .word-three{right:8px;bottom:48px}
 }
+
+/* Lapisan result fix — batasi lebar saran belajar agar kolom nilai tak terhimpit */
+.quiz-result .study-tip{flex:0 1 340px;min-width:0;align-self:center}
+@media(max-width:1150px){.quiz-result .study-tip{flex-basis:280px}}
+@media(max-width:900px){
+ .quiz-result{flex-wrap:wrap}
+ .quiz-result .study-tip{flex:1 1 100%;order:4}
+ .result-copy{flex:1 1 260px}
+}
+.quiz-result .sec-break{max-width:100%}
+.quiz-result .result-copy>p{margin-top:8px}
+
+/* Kartu Uji Kemampuan aktif: gradien biru tua + TEKS PUTIH agar terbaca */
+.chapter-mixed.active{background:linear-gradient(120deg,#3e586e,#57748c);border-style:solid;border-color:#3e586e}
+.chapter-mixed.active .chapter-card-copy>small{color:#d9e7f2}
+.chapter-mixed.active .chapter-card-copy>strong{color:#fff}
+.chapter-mixed.active .chapter-card-meta{color:#cfdde9}
+.chapter-mixed.active .chapter-card-meta>i{background:#cfdde9}
+.chapter-mixed.active .chapter-mini{background:#ffffff2b;border-color:#ffffff45}
+.chapter-mixed.active .chapter-score{background:#fff;color:#3e586e}

@@ -9,8 +9,8 @@ const Q=new Map(COURSE.questions.map(q=>[q.id,q]));
 let current: number | 'mixed'=1,observer=null,searchTimer=null,storageOK=true,confirmPending=null;
 let readSet=new Set<string>();
 let saved: SavedState = {version:1,current:1,sessions:{}};
-try{const raw=JSON.parse(localStorage.getItem(KEY)||'null');if(raw?.version===1&&raw.sessions&&typeof raw.sessions==='object'&&!Array.isArray(raw.sessions)){saved=raw;current=raw.current==='mixed'||COURSE.chapters.some(c=>c.id===raw.current)?raw.current:1}}catch{storageOK=false}
-function save(){saved.current=current;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch{storageOK=false}}
+try{const raw=JSON.parse(localStorage.getItem(KEY)||'null');if(raw?.version===1&&raw.sessions&&typeof raw.sessions==='object'&&!Array.isArray(raw.sessions)){saved=raw;saved.sessions={};current=raw.current==='mixed'||COURSE.chapters.some(c=>c.id===raw.current)?raw.current:1}}catch{storageOK=false}
+function save(){saved.current=current;try{localStorage.setItem(KEY,JSON.stringify({version:1,current:saved.current,sessions:{}}))}catch{storageOK=false}}
 function fillIcons(root=document){root.querySelectorAll('[data-icon]').forEach((n: HTMLElement)=>n.outerHTML=icon(n.dataset.icon!))}
 const activeMotions=new WeakMap();
 function motion(el,frames,duration=330,delay=0){
@@ -40,7 +40,7 @@ function makeSession(key=sid()){
  const previous=saved.sessions[key];const pool=key==='mixed'?COURSE.questions.filter(q=>q.id.startsWith('UK')).map(q=>q.id):COURSE.chapters.find(c=>String(c.id)===key).questions;
  const order=differentOrder(pool,previous?.order),options: Record<string,string[]>={};
  // Pilihan Benar/Salah memakai urutan tetap; yang diacak adalah urutan soalnya.
- order.forEach(id=>{options[id]=Q.get(id).options.map(o=>o.id)});
+ order.forEach(id=>{const opts=Q.get(id).options.map(o=>o.id);options[id]=opts.length===2?opts:differentOrder(opts,previous?.options?.[id])});
  saved.sessions[key]={order,options,answers:{},submitted:false};save();return saved.sessions[key];
 }
 
@@ -48,7 +48,7 @@ const GROUP_LABEL: Record<number, string> = {1:'A · Teks Prosedur',2:'B · Beri
 function examStartHTML(){
  const meta=[['Mata pelajaran','Bahasa Indonesia'],['Jumlah soal','40 soal'],['Komposisi','25 B/S · 5 teks · 10 PGK'],['Penilaian','2,5 poin per soal']];
  const petunjuk=['Bacalah setiap pernyataan dengan teliti.','Pilih Benar apabila pernyataan sesuai dengan materi.','Pilih Salah apabila pernyataan tidak sesuai dengan materi.','Pada soal pilihan ganda kompleks, centang semua pernyataan yang benar.','Kerjakan tanpa melihat rangkuman atau kunci jawaban.','Setiap soal bernilai 2,5 poin. Nilai maksimal adalah 100.'];
- return `<div class="exam-start"><div class="exam-head"><div class="exam-emblem" aria-hidden="true">${chapterArt(4)}</div><div><span class="eyebrow">LATIHAN ULANGAN BAHASA INDONESIA</span><h3>Uji Kemampuan — 40 Soal</h3><p>Terdiri atas 25 soal Benar/Salah, 5 soal berbasis teks pendek, dan 10 soal pilihan ganda kompleks dari tiga materi kisi-kisi — disusun menyerupai model soal ulangan sekolah dengan beberapa pernyataan penjebak.</p></div></div><div class="exam-meta">${meta.map(m=>`<span><small>${m[0]}</small><b>${m[1]}</b></span>`).join('')}</div><div class="exam-petunjuk"><b>Petunjuk pengerjaan</b><ol>${petunjuk.map(p=>`<li>${p}</li>`).join('')}</ol></div><div class="exam-actions"><button class="button primary" id="quiz-start">Mulai Uji Kemampuan ${icon('arrow')}</button><span class="exam-note">${icon('shuffle')}Urutan soal diacak setiap kali mulai atau dikerjakan ulang</span></div></div>`}
+ return `<div class="exam-start"><div class="exam-head"><div class="exam-emblem" aria-hidden="true">${chapterArt(4)}</div><div><span class="eyebrow">LATIHAN ULANGAN BAHASA INDONESIA</span><h3>Uji Kemampuan — 40 Soal</h3><p>Terdiri atas 25 soal Benar/Salah, 5 soal berbasis teks pendek, dan 10 soal pilihan ganda kompleks dari tiga materi kisi-kisi — disusun menyerupai model soal ulangan sekolah dengan beberapa pernyataan penjebak.</p></div></div><div class="exam-meta">${meta.map(m=>`<span><small>${m[0]}</small><b>${m[1]}</b></span>`).join('')}</div><div class="exam-petunjuk"><b>Petunjuk pengerjaan</b><ol>${petunjuk.map(p=>`<li>${p}</li>`).join('')}</ol></div><div class="exam-actions"><button class="button primary" id="quiz-start">Mulai Uji Kemampuan ${icon('arrow')}</button><span class="exam-note">${icon('shuffle')}Urutan soal dan pilihan jawaban diacak setiap kali mulai atau dikerjakan ulang</span></div></div>`}
 function formatBreakdown(){const s=session();if(!s||!s.submitted)return '';const per: Record<string,[number,number]>={bs:[0,0],tx:[0,0],pg:[0,0]};for(const id of s.order){const q=Q.get(id);if(!q)continue;const k=q.correctSet?'pg':q.text?'tx':'bs';per[k][1]++;if(s.answers[id]&&isRightAns(q,s.answers[id]))per[k][0]++}return `<div class="sec-break fmt">${[['bs','B / S'],['tx','Berbasis teks'],['pg','PG kompleks']].map(([k,label])=>`<span>${label}: ${per[k][0]}/${per[k][1]}</span>`).join('')}</div>`}
 function mixedBreakdown(){const s=session();if(!s||!s.submitted)return '';const per: Record<number,[number,number]>={1:[0,0],2:[0,0],3:[0,0]};for(const id of s.order){const q=Q.get(id);if(!q)continue;per[q.group][1]++;if(s.answers[id]===q.correct)per[q.group][0]++}return `<div class="sec-break">${[1,2,3].map(g=>`<span>${GROUP_LABEL[g]}: ${per[g][0]}/${per[g][1]}</span>`).join('')}</div>`}
 
@@ -76,6 +76,7 @@ function renderLessons(){
  $$('.section-heading').forEach(h=>observer.observe(h));updateDetailToggle();observeEntries();
 }
 function setChapter(value,scroll=true){
+ const _k=value==='mixed'?'mixed':String(value);if(saved.sessions[_k]){delete saved.sessions[_k];save()}
  const next=value==='mixed'?'mixed':Number(value);if(next!=='mixed'&&!COURSE.chapters.some(c=>c.id===next))return;
  ++searchEpoch;++quizEpoch;++navigationEpoch;current=next;clearTimeout(searchTimer);$<HTMLInputElement>('#search').value='';$<HTMLButtonElement>('#search-clear').hidden=true;$('#search-empty').hidden=true;$('#search-status').textContent='';save();renderChapters();
  const mixed=current==='mixed',c=chapter();
