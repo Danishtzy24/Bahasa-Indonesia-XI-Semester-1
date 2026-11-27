@@ -9,8 +9,8 @@ const Q=new Map(COURSE.questions.map(q=>[q.id,q]));
 let current: number | 'mixed'=1,observer=null,searchTimer=null,storageOK=true,confirmPending=null;
 let readSet=new Set<string>();
 let saved: SavedState = {version:1,current:1,sessions:{}};
-try{const raw=JSON.parse(localStorage.getItem(KEY)||'null');if(raw?.version===1&&raw.sessions&&typeof raw.sessions==='object'&&!Array.isArray(raw.sessions)){saved=raw;saved.sessions={};current=raw.current==='mixed'||COURSE.chapters.some(c=>c.id===raw.current)?raw.current:1}}catch{storageOK=false}
-function save(){saved.current=current;try{localStorage.setItem(KEY,JSON.stringify({version:1,current:saved.current,sessions:{}}))}catch{storageOK=false}}
+try{const raw=JSON.parse(localStorage.getItem(KEY)||'null');if(raw?.version===1&&raw.sessions&&typeof raw.sessions==='object'&&!Array.isArray(raw.sessions)){saved=raw;current=raw.current==='mixed'||COURSE.chapters.some(c=>c.id===raw.current)?raw.current:1}}catch{storageOK=false}
+function save(){saved.current=current;try{localStorage.setItem(KEY,JSON.stringify(saved))}catch{storageOK=false}}
 function fillIcons(root=document){root.querySelectorAll('[data-icon]').forEach((n: HTMLElement)=>n.outerHTML=icon(n.dataset.icon!))}
 const activeMotions=new WeakMap();
 function motion(el,frames,duration=330,delay=0){
@@ -44,13 +44,13 @@ function makeSession(key=sid()){
  saved.sessions[key]={order,options,answers:{},submitted:false};save();return saved.sessions[key];
 }
 
-const GROUP_LABEL: Record<number, string> = {1:'A · Teks Prosedur',2:'B · Berita Inovasi',3:'C · Berita Sejarah'};
+const GROUP_LABEL: Record<number, string> = {1:'A · Argumentasi',2:'B · Prosedur',3:'C · Berita',4:'D · Cerpen',5:'E · Intrinsik',6:'F · Kaidah'};
 function examStartHTML(){
  const meta=[['Mata pelajaran','Bahasa Indonesia'],['Jumlah soal','40 soal'],['Komposisi','25 B/S · 5 teks · 10 PGK'],['Penilaian','2,5 poin per soal']];
  const petunjuk=['Bacalah setiap pernyataan dengan teliti.','Pilih Benar apabila pernyataan sesuai dengan materi.','Pilih Salah apabila pernyataan tidak sesuai dengan materi.','Pada soal pilihan ganda kompleks, centang semua pernyataan yang benar.','Kerjakan tanpa melihat rangkuman atau kunci jawaban.','Setiap soal bernilai 2,5 poin. Nilai maksimal adalah 100.'];
- return `<div class="exam-start"><div class="exam-head"><div class="exam-emblem" aria-hidden="true">${chapterArt(4)}</div><div><span class="eyebrow">LATIHAN ULANGAN BAHASA INDONESIA</span><h3>Uji Kemampuan — 40 Soal</h3><p>Terdiri atas 25 soal Benar/Salah, 5 soal berbasis teks pendek, dan 10 soal pilihan ganda kompleks dari tiga materi kisi-kisi — disusun menyerupai model soal ulangan sekolah dengan beberapa pernyataan penjebak.</p></div></div><div class="exam-meta">${meta.map(m=>`<span><small>${m[0]}</small><b>${m[1]}</b></span>`).join('')}</div><div class="exam-petunjuk"><b>Petunjuk pengerjaan</b><ol>${petunjuk.map(p=>`<li>${p}</li>`).join('')}</ol></div><div class="exam-actions"><button class="button primary" id="quiz-start">Mulai Uji Kemampuan ${icon('arrow')}</button><span class="exam-note">${icon('shuffle')}Urutan soal dan pilihan jawaban diacak setiap kali mulai atau dikerjakan ulang</span></div></div>`}
+ return `<div class="exam-start"><div class="exam-head"><div class="exam-emblem" aria-hidden="true">${chapterArt(7)}</div><div><span class="eyebrow">LATIHAN ULANGAN BAHASA INDONESIA</span><h3>Uji Kemampuan — 40 Soal</h3><p>Terdiri atas 25 soal Benar/Salah, 5 soal berbasis teks pendek, dan 10 soal pilihan ganda kompleks dari enam materi bab — disusun menyerupai model soal ulangan sekolah dengan beberapa pernyataan penjebak.</p></div></div><div class="exam-meta">${meta.map(m=>`<span><small>${m[0]}</small><b>${m[1]}</b></span>`).join('')}</div><div class="exam-petunjuk"><b>Petunjuk pengerjaan</b><ol>${petunjuk.map(p=>`<li>${p}</li>`).join('')}</ol></div><div class="exam-actions"><button class="button primary" id="quiz-start">Mulai Uji Kemampuan ${icon('arrow')}</button><span class="exam-note">${icon('shuffle')}Urutan soal dan pilihan jawaban diacak setiap kali mulai atau dikerjakan ulang</span></div></div>`}
 function formatBreakdown(){const s=session();if(!s||!s.submitted)return '';const per: Record<string,[number,number]>={bs:[0,0],tx:[0,0],pg:[0,0]};for(const id of s.order){const q=Q.get(id);if(!q)continue;const k=q.correctSet?'pg':q.text?'tx':'bs';per[k][1]++;if(s.answers[id]&&isRightAns(q,s.answers[id]))per[k][0]++}return `<div class="sec-break fmt">${[['bs','B / S'],['tx','Berbasis teks'],['pg','PG kompleks']].map(([k,label])=>`<span>${label}: ${per[k][0]}/${per[k][1]}</span>`).join('')}</div>`}
-function mixedBreakdown(){const s=session();if(!s||!s.submitted)return '';const per: Record<number,[number,number]>={1:[0,0],2:[0,0],3:[0,0]};for(const id of s.order){const q=Q.get(id);if(!q)continue;per[q.group][1]++;if(s.answers[id]===q.correct)per[q.group][0]++}return `<div class="sec-break">${[1,2,3].map(g=>`<span>${GROUP_LABEL[g]}: ${per[g][0]}/${per[g][1]}</span>`).join('')}</div>`}
+function mixedBreakdown(){const s=session();if(!s||!s.submitted)return '';const per: Record<number,[number,number]>={1:[0,0],2:[0,0],3:[0,0],4:[0,0],5:[0,0],6:[0,0]};for(const id of s.order){const q=Q.get(id);if(!q)continue;per[q.group][1]++;if(isRightAns(q,s.answers[id]))per[q.group][0]++}return `<div class="sec-break">${[1,2,3,4,5,6].map(g=>`<span>${GROUP_LABEL[g]}: ${per[g][0]}/${per[g][1]}</span>`).join('')}</div>`}
 
 function renderChapters(){
  const nav=$('#chapter-nav'),mixedCard=nav.querySelector('[data-chapter="mixed"]');
@@ -60,9 +60,9 @@ function renderChapters(){
   const ms=saved.sessions['mixed'],mg=ms?.submitted?score(ms).value:null;let mb=mixedCard.querySelector('.chapter-score');if(mg===null)mb?.remove();else{if(!mb){mb=document.createElement('span');mb.className='chapter-score';mixedCard.querySelector('.chapter-card-meta').append(mb)}mb.textContent=String(mg);mb.setAttribute('aria-label','Nilai terakhir '+mg)}
   return}
  const ms=saved.sessions['mixed'],mg=ms?.submitted?score(ms).value:null;
- nav.innerHTML=COURSE.chapters.map(c=>{const s=saved.sessions[String(c.id)],grade=s?.submitted?score(s).value:null;return `<button class="chapter-button ${c.id===current?'active':''}" data-chapter="${c.id}" aria-pressed="${c.id===current}" aria-controls="chapter-title"><span class="chapter-mini">${chapterArt(c.id)}</span><span class="chapter-card-copy"><small>BAB ${String(c.id).padStart(2,'0')}</small><strong>${esc(c.title)}</strong><span class="chapter-card-meta">${c.sections.length} topik<i></i>${c.questions.length} soal${grade!==null?`<span class="chapter-score" aria-label="Nilai terakhir ${grade}">${grade}</span>`:''}</span></span></button>`}).join('')+`<button class="chapter-button chapter-mixed ${current==='mixed'?'active':''}" data-chapter="mixed" aria-pressed="${current==='mixed'}" aria-controls="chapter-title"><span class="chapter-mini">${chapterArt(4)}</span><span class="chapter-card-copy"><small>UJI KEMAMPUAN</small><strong>40 Soal Benar/Salah</strong><span class="chapter-card-meta">3 materi<i></i>diacak tiap sesi${mg!==null?`<span class="chapter-score" aria-label="Nilai terakhir ${mg}">${mg}</span>`:''}</span></span></button>`;
+ nav.innerHTML=COURSE.chapters.map(c=>{const s=saved.sessions[String(c.id)],grade=s?.submitted?score(s).value:null;return `<button class="chapter-button ${c.id===current?'active':''}" data-chapter="${c.id}" aria-pressed="${c.id===current}" aria-controls="chapter-title"><span class="chapter-mini">${chapterArt(c.id)}</span><span class="chapter-card-copy"><small>BAB ${String(c.id).padStart(2,'0')}</small><strong>${esc(c.title)}</strong><span class="chapter-card-meta">${c.sections.length} topik<i></i>${c.questions.length} soal${grade!==null?`<span class="chapter-score" aria-label="Nilai terakhir ${grade}">${grade}</span>`:''}</span></span></button>`}).join('')+`<button class="chapter-button chapter-mixed ${current==='mixed'?'active':''}" data-chapter="mixed" aria-pressed="${current==='mixed'}" aria-controls="chapter-title"><span class="chapter-mini">${chapterArt(7)}</span><span class="chapter-card-copy"><small>UJI KEMAMPUAN</small><strong>40 Soal Benar/Salah</strong><span class="chapter-card-meta">6 materi<i></i>diacak tiap sesi${mg!==null?`<span class="chapter-score" aria-label="Nilai terakhir ${mg}">${mg}</span>`:''}</span></span></button>`;
 }
-function headingArt(){const n=current==='mixed'?4:current;const f=FORMULAS[n-1];$('#formula-icon').outerHTML=icon(CHAPTER_ICONS[n-1],'formula-icon');$('.formula-icon').id='formula-icon';$('#formula-label').textContent=f[0];$('#formula-text').textContent=f[1]}
+function headingArt(){const n=current==='mixed'?7:current;const f=FORMULAS[n-1];$('#formula-icon').outerHTML=icon(CHAPTER_ICONS[n-1],'formula-icon');$('.formula-icon').id='formula-icon';$('#formula-label').textContent=f[0];$('#formula-text').textContent=f[1]}
 function defaultOpen(){return true}
 function renderLessons(){
  observer?.disconnect();
@@ -76,22 +76,21 @@ function renderLessons(){
  $$('.section-heading').forEach(h=>observer.observe(h));updateDetailToggle();observeEntries();
 }
 function setChapter(value,scroll=true){
- const _k=value==='mixed'?'mixed':String(value);if(saved.sessions[_k]){delete saved.sessions[_k];save()}
  const next=value==='mixed'?'mixed':Number(value);if(next!=='mixed'&&!COURSE.chapters.some(c=>c.id===next))return;
  ++searchEpoch;++quizEpoch;++navigationEpoch;current=next;clearTimeout(searchTimer);$<HTMLInputElement>('#search').value='';$<HTMLButtonElement>('#search-clear').hidden=true;$('#search-empty').hidden=true;$('#search-status').textContent='';save();renderChapters();
  const mixed=current==='mixed',c=chapter();
  $('#chapter-kicker').innerHTML=`<span class="hero-chapter-label">${mixed?'LATIHAN CAMPURAN':'BAB '+String(c.id).padStart(2,'0')}</span>BAHASA INDONESIA / XI`;
- $('#chapter-title').textContent=mixed?'Uji Kemampuan.':c.title+'.';$('#chapter-subtitle').textContent=mixed?'Teks Prosedur · Berita Inovasi · Berita Sejarah':c.subtitle;
+ $('#chapter-title').textContent=mixed?'Uji Kemampuan.':c.title+'.';$('#chapter-subtitle').textContent=mixed?'Argumentasi · Prosedur · Berita · Cerpen · Intrinsik · Kaidah':c.subtitle;
  $('#example-english').textContent=mixed?'Baca setiap pernyataan, lalu pilih Benar atau Salah.':c.example;$('#example-english').lang='id';$('#example-meaning').textContent=mixed?'Setiap soal bernilai 2,5 poin · nilai maksimal 100.':c.translation;
  $('#hero-question-count').textContent=mixed?'40 soal · Benar/Salah':c.questions.length+' soal latihan';$('#material-number').textContent=mixed?'—':String(c.id).padStart(2,'0');$('#toolbar-sub').textContent=mixed?'':c.sections.length+' topik · '+c.sections.reduce((n,s)=>n+s.details.length,0)+' poin bahasan';
  $('.hero-actions .button').hidden=mixed;
  $('.hero-actions .hero-practice').hidden=false;
- const heroFile=mixed?'desk-belajar':({1:'prosedur',2:'inovasi',3:'sejarah'} as Record<number,string>)[c?.id??1];
+ const heroFile=mixed?'desk-belajar':({1:'argumen',2:'prosedur',3:'inovasi',4:'sejarah',5:'intrinsik',6:'kaidah'} as Record<number,string>)[c?.id??1];
  const heroImg=$<HTMLImageElement>('.hero-image');heroImg.src=`assets/${heroFile}.webp`;heroImg.alt=mixed?'Ilustrasi siswa belajar dengan buku dan kartu materi':'Ilustrasi materi '+(c?c.title.toLowerCase():'')+' berwarna biru muda';
- updateHeroWords(mixed?4:c.id);
+ updateHeroWords(mixed?7:c.id);
  headingArt();
  if(mixed){observer?.disconnect();$('.material-toolbar').hidden=true;$('.toc-panel').hidden=true;$('.lesson-options').hidden=true;$('#chapter-intro').hidden=true;$('#lesson-content').innerHTML='';$('.course-layout').classList.add('mixed-layout');$('#end-title').textContent='Uji Kemampuan';$<HTMLButtonElement>('#next-chapter').innerHTML='Kembali ke pilihan bab '+icon('arrow-up')}
- else{$('.material-toolbar').hidden=false;$('.course-layout').classList.remove('mixed-layout');renderLessons();$('#end-title').textContent=c.title;$<HTMLButtonElement>('#next-chapter').innerHTML=(c.id<3?'Bab berikutnya':'Latihan campuran')+' '+icon('arrow')}
+ else{$('.material-toolbar').hidden=false;$('.course-layout').classList.remove('mixed-layout');renderLessons();$('#end-title').textContent=c.title;$<HTMLButtonElement>('#next-chapter').innerHTML=(c.id<6?'Bab berikutnya':'Latihan campuran')+' '+icon('arrow')}
  renderQuiz();
  if(scroll){$('.chapter-hero').scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'});$('#chapter-title').setAttribute('tabindex','-1');$('#chapter-title').focus({preventScroll:true})}
  motion($('.hero-copy'),[{opacity:0,transform:'translateY(14px)'},{opacity:1,transform:'translateY(0)'}],330);
@@ -209,10 +208,13 @@ $('#quiz-workspace').addEventListener('change',e=>{const el=(e.target as HTMLEle
 let parallaxFrame=0;$('.hero-scene').addEventListener('pointermove',e=>{if(reduced.matches||e.pointerType!=='mouse')return;cancelAnimationFrame(parallaxFrame);parallaxFrame=requestAnimationFrame(()=>{const r=$('.hero-scene').getBoundingClientRect();$('.hero-scene').style.setProperty('--px',((e.clientX-r.left)/r.width-.5)*9+'px');$('.hero-scene').style.setProperty('--py',((e.clientY-r.top)/r.height-.5)*7+'px')})});$('.hero-scene').addEventListener('pointerleave',()=>{cancelAnimationFrame(parallaxFrame);$('.hero-scene').style.setProperty('--px','0px');$('.hero-scene').style.setProperty('--py','0px')});
 
 const HERO_WORDS: Record<number, [string,string,string][]> = {
- 1:[['KONJUNGSI','Kemudian','temporal'],['KAIDAH','Imperatif','perintah'],['BILANGAN','Dua mangga','jumlah']],
- 2:[['UNSUR','What','apa'],['STRUKTUR','Lead','teras berita'],['SYARAT','Faktual','berita']],
- 3:[['KRONOLOGI','17 Agustus','1945'],['SUMBER','Primer','langsung'],['KONSEP','Interpretasi','bukan fakta']],
- 4:[['SOAL','40','3 format soal'],['NILAI','2,5 poin','maksimal 100'],['PGK','10 soal','centang semua benar']]};
+ 1:[['JENIS','Sebab-akibat','urutan klaim'],['KAIDAH','Meyakini','kerja mental'],['BEDA','Fakta','vs opini']],
+ 2:[['KONJUNGSI','Kemudian','temporal'],['KAIDAH','Imperatif','perintah'],['BILANGAN','Dua mangga','jumlah']],
+ 3:[['UNSUR','What','apa'],['STRUKTUR','Lead','teras berita'],['NILAI','Aktual','berita']],
+ 4:[['STRUKTUR','Resolusi','penyelesaian'],['BENTUK','Fiksi','cerpen'],['SEJARAH','Kronologi','urutan waktu']],
+ 5:[['IN','Tema','dari dalam'],['OUT','Pengarang','dari luar'],['SUDUT','Aku / Dia','pandang']],
+ 6:[['KONJUNGSI','Karena','kausalitas'],['MAJAS','Simile','bagaikan'],['BAKU','Izin','bukan ijin']],
+ 7:[['SOAL','40','3 format soal'],['NILAI','2,5 poin','maksimal 100'],['PGK','10 soal','centang semua benar']]};
 function updateHeroWords(n: number){const words=HERO_WORDS[n]||HERO_WORDS[1];['one','two','three'].forEach((cls,i)=>{const el=document.querySelector('.hero-word.word-'+cls) as HTMLElement|null;if(!el||!words[i])return;el.querySelector('small')!.textContent=words[i][0];el.querySelector('b')!.textContent=words[i][1];el.querySelector('span')!.textContent=words[i][2]})}
 
 fillIcons();setChapter(current,false);save();document.fonts.ready.then(()=>{motion($('.collection-heading'),[{opacity:.5,transform:'translateY(9px)'},{opacity:1,transform:'translateY(0)'}],400)});

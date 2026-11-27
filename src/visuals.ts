@@ -7,113 +7,189 @@ const sample=(label: string,sentence: string,formula: string,meaning='',cue=''):
 const lab=(note: string,kind: string,items: VisualItem[]): VisualModel=>({note,kind,items});
 const flat=(s: string)=>esc(s.replace(/\|/g,' · '));
 export const VISUALS: Record<string, VisualModel> = {
-/* ---------- Bab 1 · Teks Prosedur ---------- */
-'s1-1':lab('Prosedur = urutan langkah menuju satu tujuan.','steps',[
+/* ---------- Bab 1 · Teks Argumentasi ---------- */
+'s1-1':lab('Pendapat + alasan + bukti = argumentasi yang sah.','flow',[
+ sample('Pengertian','Pendapat|alasan dan bukti|Meyakinkan pembaca','Klaim berbukti','Teks argumentasi berisi pendapat penulis disertai alasan dan fakta.'),
+ sample('Tujuan','Meyakinkan|membuktikan|Berpikir kritis','Empat tujuan utama','Meyakinkan, menyampaikan gagasan berbasis fakta, membuktikan, mengajak kritis.'),
+ sample('Kontrol','Opini kosong|Tanpa bukti|Bukan argumentasi','Harus berbukti','Pendapat tanpa fakta hanya opini biasa — sering jadi jebakan soal.')]),
+'s1-2':lab('Enam ciri — sering diuji benar/salah.','steps',[
+ sample('Ciri 01','Pendapat|penulis','Inti teks','Berisi pendapat atau pandangan penulis.'),
+ sample('Ciri 02','Fakta|data atau bukti','Penunjang klaim','Setiap pendapat didukung bukti yang dapat diverifikasi.'),
+ sample('Ciri 03','Alasan|logis','Jalan berpikir','Alasan menghubungkan pendapat dengan bukti.'),
+ sample('Ciri 04','Meyakinkan|pembaca','Tujuan akhir','Bahasa jelas dan objektif — bukan emosional.')]),
+'s1-3':lab('Tiga struktur, dibaca berurutan.','flow',[
+ sample('01 · Pendahuluan','Memperkenalkan|masalah|topik dibahas','Awal teks','Masalah diperkenalkan lebih dulu.'),
+ sample('02 · Argumen','Pendapat|alasan|fakta pendukung','Bagian inti','Rangkaian klaim + bukti.'),
+ sample('03 · Penegasan','Kesimpulan|penguatan|pendapat ulang','Akhir teks','Mengulang klaim — bukan topik baru.')]),
+'s1-4':lab('Dua jenis dibedakan urutan sebab-akibat.','compare',[
+ sample('Sebab-akibat','Sampah|tersumbat|risiko banjir','Penyebab dulu','Dimulai dari penyebab lalu akibatnya.'),
+ sample('Akibat-sebab','Banjir|sering terjadi|penyebabnya sampah','Akibat dulu','Dimulai dari peristiwa lalu mencari penyebab.'),
+ sample('Bedanya','Lihat|kalimat pertama','Trik soal','Kalimat awal menentukan jenisnya.')]),
+'s1-5':lab('Kaidah bahasa khas teks argumentasi.','sentence',[
+ sample('Pendapat','Menurut saya|sebaiknya|perlu','Penanda pendapat','Kata yang menyatakan pendapat.'),
+ sample('Kausalitas','Karena|sebab|sehingga','Sebab-akibat','Konjungsi penghubung sebab dan akibat.'),
+ sample('Mental','Meyakini|berpendapat|menganggap','Kerja mental','Berkaitan pikiran, perasaan, tanggapan.'),
+ sample('Rujukan','Ini|itu|tersebut','Merujuk kembali','Menunjuk hal yang telah disebutkan.')]),
+'s1-6':lab('Fakta dapat dibuktikan — opini penilaian.','compare',[
+ sample('Fakta','Zona waktu|Indonesia|terukur','Objektif','Dapat dibuktikan dengan data.'),
+ sample('Opini','Paling|menyenangkan|subjektif','Penilaian','Bergantung pemikiran seseorang.'),
+ sample('Jebakan','Angka|belum tentu|fakta','Kunci: terukur','Kuncinya dapat dibuktikan atau tidak.')]),
+
+/* ---------- Bab 4 · Cerpen & Cerita Sejarah ---------- */
+'s4-1':lab('Cerpen: fiksi singkat, satu konflik utama.','steps',[
+ sample('Pengertian','Prosa|fiksi|singkat terfokus','Karya sastra','Menceritakan konflik tokoh secara singkat.'),
+ sample('Ciri 01','Satu|konflik utama','Fokus tajam','Tokoh terbatas — bukan banyak sejajar.'),
+ sample('Ciri 02','Alur|amanat','Pesan cerita','Mengandung pesan atau pelajaran.'),
+ sample('Sifat','Fiksi|rekaan|inspirasi nyata','Boleh nyata','Fiksi meski bisa terinspirasi kejadian nyata.')]),
+'s4-2':lab('Enam struktur — abstrak & koda opsional.','flow',[
+ sample('Abstrak','Gambaran|awal|opsional','Boleh ada','Sifatnya opsional.'),
+ sample('Orientasi','Tokoh|latar|situasi','Wajib','Pengenalan awal cerita.'),
+ sample('Komplikasi','Masalah|muncul|konflik','Wajib','Konflik mulai terbentuk.'),
+ sample('Resolusi','Penyelesaian|masalah','Wajib','Masalah diselesaikan — koda pesan (opsional).')]),
+'s4-3':lab('Cerita sejarah: peristiwa masa lalu + kronologi.','steps',[
+ sample('Pengertian','Peristiwa|masa lalu|latar sejarah','Karya naratif','Memperhatikan waktu, tempat, tokoh, kejadian.'),
+ sample('Bentuk','Faktual|fiksi sejarah|dua sah','Dua bentuk','Faktual = nyata; fiksi = rekaan berlatar sejarah.'),
+ sample('Ciri','Kronologi|nilai|kehidupan','Urutan waktu','Menggunakan urutan waktu dan bernilai kehidupan.')]),
+'s4-4':lab('Struktur cerita sejarah menonjolkan puncak konflik.','flow',[
+ sample('Orientasi','Tokoh|waktu|tempat','Pengenalan','Keadaan awal.'),
+ sample('Peristiwa|Konflik','Pertentangan|muncul','Pengungkapan','Awal peristiwa → konflik.'),
+ sample('Puncak','Bagian|paling|menegangkan','Klimaks','Titik paling menegangkan.'),
+ sample('Penyelesaian|Koda','Konflik|selesai|pesan','Penutup','Diselesaikan lalu pesan cerita.')]),
+'s4-5':lab('Cerpen bebas latar — cerita sejarah berpijak masa lalu.','compare',[
+ sample('Cerpen','Satu|konflik|latar bebas','Umumnya fiksi','Tokoh boleh rekaan.'),
+ sample('Sejarah','Peristiwa|masa lalu|kronologi','Faktual/fiksi','Latar terkait periode sejarah.'),
+ sample('Jebakan','Wajib|faktual|dua-duanya','Salah','Hanya cerita sejarah faktual yang wajib nyata.')]),
+'s4-6':lab('Langkah membaca dua karya naratif.','steps',[
+ sample('Cerpen','Tokoh|konflik|amanat','Empat langkah','Tandai tokoh, lacak konflik, cari latar, simpulkan amanat.'),
+ sample('Sejarah','Tahun|kronologi|fakta','Baca urutan','Catat periode, susun kronologi, pisahkan fakta/imajinasi.'),
+ sample('Nilai','Sifat|baik|tokoh','Jawab soal','Nilai kehidupan = sifat baik dari tindakan tokoh.')]),
+
+/* ---------- Bab 5 · Unsur Intrinsik & Ekstrinsik ---------- */
+'s5-1':lab('Intrinsik membangun cerita dari dalam.','steps',[
+ sample('Pengertian','Dari|dalam|cerita','Membangun karya','Unsur yang menyusun karya sastra dari dalam.'),
+ sample('Tema','Gagasan|utama|persoalan','Pokok cerita','Persahabatan, perjuangan, pengorbanan…'),
+ sample('Tokoh|Alur','Pelaku|peristiwa|berurutan','Jalan cerita','Pelaku dan rangkaian peristiwa.'),
+ sample('Kunci','Tunjuk|di|teks','Intrinsik','Kalau bisa ditunjuk pada kutipan = intrinsik.')]),
+'s5-2':lab('Tema, tokoh, penokohan — analitik vs dramatik.','compare',[
+ sample('Tema','Pengorbanan|orang tua|gagasan','Bukan judul','Tema gagasan; judul nama karya.'),
+ sample('Analitik','"Rina|jujur"|dijelaskan langsung','Langsung','Pengarang menyebut sifat.'),
+ sample('Dramatik','Mengembalikan|dompet|tanpa diminta','Lewat aksi','Sifat terlihat dari tindakan/dialog.')]),
+'s5-3':lab('Alur dan latar: tempat, waktu, suasana.','steps',[
+ sample('Alur maju','Awal|→|akhir','Bergerak maju','Peristiwa berurutan normal.'),
+ sample('Alur mundur','Masa kini|flashback|masa lalu','Kembali ke belakang','Penanda: dulu, pada masa kecil.'),
+ sample('Latar','Tempat|waktu|suasana','Tiga jenis','Rumah/pagi/sedih dalam satu kalimat.')]),
+'s5-4':lab('Sudut pandang dan amanat.','chat',[
+ sample('Orang pertama','Aku|saya|pelaku utama','Tokoh bicara','Aku sebagai pusat cerita.'),
+ sample('Orang ketiga','Dia|serba tahu|pengamat','Dia/Li','Serba tahu = tahu pikiran; pengamat = terlihat saja.'),
+ sample('Amanat','Pesan|pelajaran|umum','Bukan ringkasan','Pilih pesan moral, bukan ulasan peristiwa.')]),
+'s5-5':lab('Ekstrinsik: pengaruh dari luar karya.','steps',[
+ sample('Pengarang','Latar|belakang|kehidupan','Dari luar','Pengalaman & pandangan pengarang.'),
+ sample('Masyarakat','Sosial|budaya|politik|ekonomi','Kondisi luar','Keadaan masyarakat saat karya dibuat.'),
+ sample('Nilai','Moral|sosial|agama|budaya','Lima nilai','Nilai kehidupan yang melingkupi cerita.')]),
+'s5-6':lab('Intrinsik vs ekstrinsik — in = dalam, ex = luar.','compare',[
+ sample('Intrinsik','Tema|alur|latar|amanat','Dari dalam','Membentuk jalan cerita.'),
+ sample('Ekstrinsik','Pengarang|politik|sosial','Dari luar','Memengaruhi penciptaan.'),
+ sample('Latihan','Sudut pandang|politik|I-E','I · E','Sudut pandang=I; kondisi politik=E.')]),
+
+/* ---------- Bab 6 · Kaidah Kebahasaan ---------- */
+'s6-1':lab('Fakta terukur — opini penilaian.','compare',[
+ sample('Fakta','Proklamasi|17 Agustus|1945','Dapat dibuktikan','Informasi nyata.'),
+ sample('Opini','Menurut saya|paling|menyenangkan','Penilaian','Pendapat seseorang.'),
+ sample('Penanda','Angka|tanggal|menurut saya','Cek konteks','Ada penanda opini → opini.')]),
+'s6-2':lab('Tujuh jenis konjungsi — hafalkan fungsi.','steps',[
+ sample('Temporal','Kemudian|setelah itu|sebelum','Urutan waktu','Menunjukkan waktu/urutan.'),
+ sample('Kausalitas','Karena|sebab|sehingga','Sebab-akibat','Hubungan sebab dan akibat.'),
+ sample('Pertentangan','Tetapi|namun|sedangkan','Perlawanan','Menunjukkan pertentangan.'),
+ sample('Tujuan|Syarat','Agar|jika|asalkan','Niat & syarat','Tujuan dan persyaratan.')]),
+'s6-3':lab('Tiga jenis verba — material, mental, relasional.','compare',[
+ sample('Material','Berlari|memotong|menulis','Tindakan fisik','Bisa dilihat mata.'),
+ sample('Mental','Berpikir|merasa|menyadari','Aktivitas pikiran','Terjadi di kepala.'),
+ sample('Relasional','Adalah|merupakan|menjadi','Menghubungkan','Menyambung subjek dengan identitas.')]),
+'s6-4':lab('Nomina, adjektiva, adverbia — tiga kelas kata.','steps',[
+ sample('Nomina','Sekolah|siswa|buku','Kata benda','Nama orang/tempat/benda/konsep.'),
+ sample('Adjektiva','Indah|rajin|cerdas','Kata sifat','Menjelaskan sifat/keadaan.'),
+ sample('Adverbia','Kemarin|perlahan|sering','Keterangan','Waktu, tempat, cara, frekuensi.')]),
+'s6-5':lab('Ragam kalimat: kutipan, aktif-pasif, perintah.','chat',[
+ sample('Langsung','"Jangan|lupa|belajar"','Tanda petik','Mengutip ucapan langsung.'),
+ sample('Aktif-Pasif','Siswa|membersihkan|kelas','Di- + oleh','Aktif: pelaku dulu; pasif: objek dulu.'),
+ sample('Imperatif','Tutup|pintu|itu!','Perintah','Deklaratif = pernyataan; interogatif = tanya.')]),
+'s6-6':lab('Kata baku vs tidak baku — pola ejaan lama.','compare',[
+ sample('Baku','Izin|nasihat|praktik|risiko','KBBI','Ejaan modern resmi.'),
+ sample('Tidak baku','Ijin|nasehat|praktek|resiko','Hindari','Pola lama / w-y salah.'),
+ sample('Jebakan','Resiko|terdengar|umum','Tetap salah','Umum ≠ baku.')]),
+'s6-7':lab('Lima majas wajib — kenali penandanya.','sentence',[
+ sample('Personifikasi','Angin|berbisik|manusia','Benda hidup','Benda mati bersifat manusia.'),
+ sample('Simile','Bagaikan|seperti|laksana','Ada penanda','Pembanding dengan kata pembanding.'),
+ sample('Hiperbola|Ironi','Seribu|tahun|pujian sinis','Berlebihan / balik','Hiperbola = lebihan; ironi = berlawanan.')]),
+
+/* ---------- Bab 2 · Teks Prosedur (adaptif) ---------- */
+'s2-1':lab('Prosedur = urutan langkah menuju satu tujuan.','steps',[
  sample('Pengertian','Teks yang berisi|langkah-langkah|secara berurutan','Petunjuk melakukan sesuatu','Prosedur = tahapan untuk melakukan, membuat, atau menggunakan sesuatu.'),
  sample('Tujuan','Memberikan|petunjuk|kepada pembaca','Benar · teratur · sesuai urutan','Agar pembaca dapat melakukan kegiatan dengan benar dan mencapai hasil yang sama.'),
  sample('Contoh','Cara membuat|nasi goreng|dan akun email','Dipakai sehari-hari','Resep masakan, panduan alat, hingga langkah membuat akun email.')]),
-'s1-2':lab('Empat ciri paling menonjol — sisanya ada di detail.','steps',[
+'s2-2':lab('Empat ciri paling menonjol — sisanya ada di detail.','steps',[
  sample('Ciri 01','Berisi|langkah-langkah|yang harus dilakukan','Inti teks prosedur','Langkah jelas dan dapat diikuti pembaca.'),
  sample('Ciri 02','Disusun|berurutan|dan sistematis','Urutan jelas','Dari langkah awal sampai akhir tanpa melompat.'),
  sample('Ciri 03','Menggunakan|kalimat perintah|atau instruksi','Bahasa imperatif','Contoh: masukkan, tekan, aduk.'),
  sample('Ciri 04','Memiliki|tujuan|yang ingin dicapai','Hasil akhir','Tujuan selalu dijelaskan di awal teks.')]),
-'s1-3':lab('Empat bagian struktur, dibaca berurutan.','steps',[
+'s2-3':lab('Empat bagian struktur, dibaca berurutan.','steps',[
  sample('01 · Tujuan','Menjelaskan|hasil|yang ingin dicapai','Contoh: cara membuat jus mangga','Selalu berada di awal teks.'),
  sample('02 · Alat & Bahan','Mangga|air dan gula|blender dan gelas','Tidak selalu ada!','Biasanya muncul pada prosedur pembuatan sesuatu.'),
  sample('03 · Langkah','Kupas|potong|blender|tuangkan','Bagian inti teks','Urutan tindakan untuk mencapai tujuan.'),
  sample('04 · Penutup','Hasil|kesimpulan|informasi tambahan','Opsional','Boleh ada, boleh tidak — bukan bagian wajib.')]),
-'s1-4':lab('Ikuti urutan membuat jus mangga.','juice',[
+'s2-4':lab('Ikuti urutan membuat jus mangga.','juice',[
  sample('01 · Kupas','Kupas|kulit mangga|hingga bersih','LANGKAH 1','Kupas kulit mangga sampai bersih.'),
  sample('02 · Potong','Potong|daging mangga|menjadi beberapa bagian','LANGKAH 2','Potong daging mangga agar mudah diblender.'),
  sample('03 · Blender','Tambahkan air dan gula,|lalu blender|hingga halus','LANGKAH 3','Masukkan potongan ke blender, tambahkan air dan gula, blender hingga halus.'),
  sample('04 · Tuang','Tuangkan|jus mangga|ke dalam gelas','LANGKAH 4','Tuang jus ke dalam gelas dan jus siap dinikmati.')]),
-'s1-5':lab('Lima kaidah bahasa khas teks prosedur.','sentence',[
+'s2-5':lab('Lima kaidah bahasa khas teks prosedur.','sentence',[
  sample('Imperatif','Masukkan|air|ke dalam panci.','Kalimat perintah','Imperatif = kalimat perintah atau instruksi, tanpa subjek.'),
  sample('Material','Ibu|memotong|bawang.','Kata kerja material','Tindakan fisik: memotong, mengaduk, menekan, mengangkat.'),
  sample('Temporal','Pertama,|kupas|mangga.','Konjungsi temporal','Pertama, kemudian, setelah itu, selanjutnya, terakhir.'),
  sample('Keterangan','Aduk|secara perlahan|','Kata keterangan','Cara: secara perlahan · waktu: selama 10 menit · jumlah: secukupnya.'),
  sample('Bilangan','Tambahkan|dua sendok|gula.','Kata bilangan','Menunjukkan jumlah atau urutan: dua sendok, langkah pertama.')]),
-'s1-6':lab('Tiga jenis prosedur + satu jebakan soal.','steps',[
+'s2-6':lab('Tiga jenis prosedur + satu jebakan soal.','steps',[
  sample('Sederhana','Langkah|sedikit|mudah dilakukan','Contoh: menyalakan lampu','Langkahnya sedikit dan mudah dilakukan.'),
  sample('Kompleks','Banyak|tahapan|yang berurutan','Contoh: kartu identitas','Tahapan banyak dan harus dikerjakan berurutan.'),
  sample('Protokol','Tidak|harus kaku|berurutan','Tujuan tetap tercapai','Tahapan boleh dikerjakan bersamaan selama tujuan tercapai.'),
  sample('Jebakan','Alat dan bahan|tidak selalu|ada','Ingat juga: penutup opsional','Jawaban "semua teks prosedur wajib punya alat dan bahan" pasti salah.')]),
-/* ---------- Bab 2 · Berita Inovasi ---------- */
-'s2-1':lab('Inovasi = baru atau pengembangan yang lebih baik.','steps',[
+
+/* ---------- Bab 3 · Teks Berita ---------- */
+'s3-1':lab('Inovasi = baru atau pengembangan yang lebih baik.','steps',[
  sample('Pengertian','Berita tentang|penemuan|atau pembaruan','Ide · produk · teknologi · metode','Informasi cara baru yang memberi manfaat atau solusi bagi masyarakat.'),
  sample('Inovasi','Baru|atau pengembangan|yang sudah ada','Tidak harus dari nol','Pengembangan sesuatu agar lebih baik, efektif, atau bermanfaat.'),
  sample('Tujuan','Memberi info|penemuan|dan manfaatnya','Menambah wawasan','Mengenalkan perkembangan iptek dan solusi atas masalah.')]),
-'s2-2':lab('Ciri berita inovasi yang faktual dan aktual.','steps',[
+'s3-2':lab('Ciri berita inovasi yang faktual dan aktual.','steps',[
  sample('Ciri 01','Membahas|penemuan|atau pembaruan','Inti pemberitaan','Ada ide, produk, atau cara baru yang dibahas.'),
  sample('Ciri 02','Faktual|dan aktual|','Dapat dipercaya','Informasi nyata dan masih baru atau relevan.'),
  sample('Ciri 03','Menjelaskan|manfaat|inovasi','Solusi bagi masyarakat','Manfaat inovasi selalu dijelaskan.'),
  sample('Ciri 04','Disertai|data|pendapat ahli','Hasil penelitian','Bisa memuat fakta, hasil penelitian, atau pendapat ahli.')]),
-'s2-3':lab('Empat bagian berita pada koran.','paper',[
+'s3-3':lab('Empat bagian berita pada koran.','paper',[
  sample('01 · Headline','Judul|inti berita|singkat dan menarik','Mahasiswa Kembangkan Alat Penyiram Otomatis','Menggambarkan pokok berita.'),
  sample('02 · Lead','Informasi|paling penting|inti pemberitaan','Pembuka: siapa · apa · kapan · di mana · mengapa','Teras berita = pembuka, bukan penutup!'),
  sample('03 · Body','Latar belakang|cara kerja|manfaat|hasil uji','Lengkap dan terperinci','Tubuh berita menjelaskan informasi secara rinci.'),
  sample('04 · Leg','Informasi|tambahan|pelengkap','Kepentingannya lebih rendah','Ekor berita melengkapi bagian sebelumnya.')]),
-'s2-4':lab('Cek kelengkapan berita dengan 6 unsur.','w6',[
+'s3-4':lab('Cek kelengkapan berita dengan 6 unsur.','w6',[
  sample('01 · What','Pembuatan|alat pendeteksi|banjir otomatis','What · apa peristiwa?','Apa peristiwa yang terjadi?'),
  sample('02 · Who','Sebuah|kelompok|mahasiswa','Who · siapa terlibat?','Siapa yang terlibat?'),
  sample('03 · When','Januari|2026|','When · kapan?','Kapan peristiwa terjadi?'),
  sample('04 · Where','Bandung|','Where · di mana?','Di mana peristiwa terjadi?'),
  sample('05 · Why','Membantu tahu|potensi banjir|lebih awal','Why · mengapa?','Mengapa peristiwa terjadi?'),
  sample('06 · How','Dengan|mengembangkan|alat deteksi','How · bagaimana?','Bagaimana peristiwa terjadi?')]),
-'s2-5':lab('Kutipan, pewarta, dan mental — jangan tertukar.','chat',[
+'s3-5':lab('Kutipan, pewarta, dan mental — jangan tertukar.','chat',[
  sample('Kalimat langsung','"Alat ini dapat membantu petani,"|jelas|salah satu peneliti.','Kutipan + tanda petik','Mengutip perkataan seseorang secara langsung.'),
  sample('Pewarta','Peneliti|menjelaskan|cara kerja alat.','Kata kerja pewarta','Mengatakan, menjelaskan, mengungkapkan, melaporkan.'),
  sample('Mental','Pakar|memperkirakan|alat ini efisien.','Kata kerja mental','Menilai, menganggap, memahami, memperkirakan.'),
  sample('Temporal','Alat diuji,|kemudian|dipasang di sawah.','Konjungsi temporal','Kemudian, setelah itu, sebelumnya, selanjutnya.')]),
-'s2-6':lab('Enam syarat berita baik + bedakan fakta dan opini.','steps',[
+'s3-6':lab('Enam syarat berita baik + bedakan fakta dan opini.','steps',[
  sample('Faktual','Berdasarkan|fakta|atau kenyataan','Syarat 01','Bisa dibuktikan kebenarannya.'),
  sample('Aktual','Informasi|masih baru|atau relevan','Syarat 02','Up to date, bukan berita lama.'),
  sample('Objektif','Disampaikan|tanpa|memihak','Syarat 03','Tidak memihak pihak mana pun.'),
  sample('Akurat','Benar|dan dapat|dipertanggungjawabkan','Syarat 04','Tepat dan dapat dipercaya.'),
  sample('Lengkap · Jelas','Info penting|dengan bahasa|mudah dipahami','Syarat 05 · 06','Kebutuhan pembaca terpenuhi dan mudah dimengerti.'),
  sample('Fakta ≠ Opini','Fakta|dapat dibuktikan|opini tidak','Jebakan soal','"Penemuan terbaik sepanjang masa" adalah opini, bukan fakta.')]),
-/* ---------- Bab 3 · Berita Sejarah ---------- */
-'s3-1':lab('Peristiwa masa lalu yang bernilai sejarah.','steps',[
- sample('Pengertian','Berita tentang|peristiwa|masa lalu','Bernilai sejarah','Penting diketahui masyarakat dan didukung bukti.'),
- sample('Isi','Tokoh|waktu|tempat|penyebab|dampak','Elemen yang dibahas','Peristiwa, tokoh terlibat, waktu, tempat, penyebab, dan dampak.'),
- sample('Contoh','Proklamasi|Sumpah Pemuda|Rengasdengklok','Lima peristiwa besar','Proklamasi, Sumpah Pemuda, Rengasdengklok, Pertempuran Surabaya, KAA.')]),
-'s3-2':lab('Ciri berita sejarah yang faktual.','steps',[
- sample('Ciri 01','Membahas|peristiwa|masa lalu','Bukan peristiwa kini','Kejadiannya sudah lampau.'),
- sample('Ciri 02','Waktu|dan tempat|kejadian jelas','Berdasarkan bukti','Fakta dan bukti sejarah mendukung.'),
- sample('Ciri 03','Memuat|tokoh|yang terlibat','Pihak yang berperan','Tokoh atau pihak yang terlibat peristiwa.'),
- sample('Ciri 04','Menggunakan|urutan waktu|kronologi','Ada penyebab dan akibat','Kronologi dan nilai penting bagi masyarakat.')]),
-'s3-3':lab('Struktur berita — sama dengan berita umum.','paper',[
- sample('01 · Headline','Topik utama|peristiwa sejarah','Proklamasi 17 Agustus 1945','Menunjukkan pokok peristiwa.'),
- sample('02 · Lead','Inti peristiwa|pada pembuka|berita','17 Agustus 1945 · Pegangsaan Timur 56','Menjelaskan inti peristiwa sejarah.'),
- sample('03 · Body','Latar belakang|tokoh|kronologi|dampak','Lengkap dan terperinci','Menjelaskan peristiwa secara rinci.'),
- sample('04 · Leg','Informasi|tambahan|setelah peristiwa','Pengaruh bagi masyarakat','Ekor berita berisi pelengkap.')]),
-'s3-4':lab('Terapkan 5W+1H pada Proklamasi.','w6',[
- sample('01 · What','Proklamasi|Kemerdekaan|Indonesia','What · apa?','Proklamasi Kemerdekaan Indonesia.'),
- sample('02 · Who','Soekarno|dan|Mohammad Hatta','Who · siapa?','Soekarno dan Mohammad Hatta.'),
- sample('03 · When','17 Agustus|1945|','When · kapan?','17 Agustus 1945.'),
- sample('04 · Where','Jalan Pegangsaan Timur|Nomor 56|Jakarta','Where · di mana?','Jalan Pegangsaan Timur Nomor 56, Jakarta.'),
- sample('05 · Why','Pernyataan|bahwa Indonesia|telah merdeka','Why · mengapa?','Sebagai pernyataan bahwa Indonesia telah merdeka.'),
- sample('06 · How','Pembacaan teks|oleh Soekarno|didampingi Hatta','How · bagaimana?','Melalui pembacaan teks proklamasi.')]),
-'s3-5':lab('Garis waktu 15–17 Agustus 1945.','line',[
- sample('15 Agustus','Jepang|menyerah|kepada Sekutu','15 Agustus 1945 · awal kronologi','Kondisi awal sebelum proklamasi.'),
- sample('16 Agustus','Terjadi|Peristiwa|Rengasdengklok','16 Agustus 1945','Tokoh dibawa ke Rengasdengklok.'),
- sample('Malam 16 Agustus','Perumusan teks|di rumah|Laksamana Maeda','Malam 16 Agustus 1945','Teks proklamasi dirumuskan malam hari.'),
- sample('17 Agustus','Proklamasi|dibacakan|Soekarno dan Hatta','17 Agustus 1945 · akhir kronologi','Proklamasi dibacakan di Jalan Pegangsaan Timur.')]),
-'s3-6':lab('Ciri bahasa berita sejarah.','sentence',[
- sample('Waktu','Proklamasi dibacakan|pada 17 Agustus 1945|','Keterangan waktu','Pada masa penjajahan, setelah Indonesia merdeka.'),
- sample('Tempat','Peristiwa terjadi|di Jakarta|','Keterangan tempat','Di Jakarta, di Surabaya, di Yogyakarta.'),
- sample('Temporal','Kemudian,|teks proklamasi|dirumuskan.','Konjungsi temporal','Kemudian, setelah itu, sebelumnya, selanjutnya, akhirnya.'),
- sample('Tindakan','Soekarno|membacakan|teks proklamasi.','Kata kerja tindakan','Memimpin, menandatangani, memperjuangkan, mengumumkan.'),
- sample('Mental','Para tokoh|menyadari|proklamasi mendesak.','Kata kerja mental','Menginginkan, menyadari, mempertimbangkan, mempercayai.')]),
-'s3-7':lab('Tiga jenis sumber, dari langsung ke rangkuman.','flow',[
- sample('01 · Primer','Berasal langsung|dari peristiwa|sejarah','Naskah asli · foto asli · dokumen resmi','Surat tokoh dan kesaksian langsung pelaku juga primer.'),
- sample('02 · Sekunder','Hasil penelitian|atau analisis|sumber primer','Buku sejarah · biografi · artikel penelitian','Dibuat berdasarkan penelitian sumber primer.'),
- sample('03 · Tersier','Merangkum|primer|dan sekunder','Ensiklopedia · indeks · kumpulan referensi','Rangkuman dari sumber primer dan sekunder.')]),
-'s3-8':lab('Fakta sejarah ≠ interpretasi sejarah.','compare',[
- sample('Fakta','Indonesia|memproklamasikan|kemerdekaan.','17 Agustus 1945 · berbukti','Benar-benar terjadi dan didukung bukti.'),
- sample('Interpretasi','Rengasdengklok|dianggap|mendorong percepatan proklamasi.','Penafsiran · sudut pandang','Pemaknaan atas fakta — bukan fakta murni.'),
- sample('Jebakan','Fakta|≠|opini pribadi','Jangan tertukar','Fakta berbukti; opini dan interpretasi belum tentu dapat dibuktikan.')]),
 };
+
 /* Diagram blender jus mangga: tinggi cairan & potongan berubah tiap langkah. */
 const JUICE_LEVEL=[0,16,34,48],JUICE_CHUNKS=[1,3,2,0];
 function juiceDiagram(index: number): string{
